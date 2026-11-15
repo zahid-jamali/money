@@ -20,7 +20,7 @@ describe('Header Component', () => {
     expect(getTargetUrlForLang('es', 'home')).toBe('/es/');
   });
 
-  it('renders logo, category navigation, and localized by Zetawala badge', () => {
+  it('renders logo, brand title, and category navigation', () => {
     const html = renderToString(<Header lang="de" />);
 
     // Logo link to /de
@@ -31,33 +31,29 @@ describe('Header Component', () => {
     // German category links
     expect(html).toContain('Banken &amp; Konten');
     expect(html).toContain('Steuern &amp; MwSt.');
-
-    // Localized badge "von Zetawala"
-    expect(html).toContain('von Zetawala');
-    expect(html).toContain('https://zetawala.com');
   });
 
-  it('renders English badge "by Zetawala" for en', () => {
+  it('renders English navigation categories and logo', () => {
     const html = renderToString(<Header lang="en" />);
-    expect(html).toContain('by Zetawala');
-    expect(html).toContain('https://zetawala.com');
+    expect(html).toContain('Zetawala');
+    expect(html).toContain('Money');
+    expect(html).toContain('Banking');
+    expect(html).toContain('Tax &amp; VAT');
   });
 });
 
 describe('Footer Component', () => {
-  it('renders parent-brand block, 4 columns, and copyright', () => {
+  it('renders brand column, tool navigation, and single discrete Zetawala project link', () => {
     const html = renderToString(<Footer lang="en" />);
 
-    // Parent block
-    expect(html).toContain('Zetawala Money is part of the Zetawala network of free tools.');
-    expect(html).toContain('Visit Zetawala →');
+    // Discrete parent attribution
+    expect(html).toContain('A project by');
     expect(html).toContain('https://zetawala.com');
 
     // Columns
     expect(html).toContain('Calculators');
     expect(html).toContain('Guides');
     expect(html).toContain('Information');
-    expect(html).toContain('Zetawala Money');
 
     // Copyright
     expect(html).toMatch(/2026/);
@@ -70,9 +66,9 @@ describe('Footer Component', () => {
   it('includes Impressum on German /de/ footer', () => {
     const html = renderToString(<Footer lang="de" />);
 
-    // Localized parent block
-    expect(html).toContain('Zetawala Money ist Teil des Zetawala-Netzwerks für kostenlose Online-Tools.');
-    expect(html).toContain('Zetawala besuchen →');
+    // Discrete parent attribution
+    expect(html).toContain('A project by');
+    expect(html).toContain('https://zetawala.com');
 
     // Impressum link must be present on German footer
     expect(html).toContain('Impressum');

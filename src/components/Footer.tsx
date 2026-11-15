@@ -9,6 +9,7 @@ import {
 } from '@/config/pages';
 import { getDictionary } from '@/i18n';
 import { SITE_PAGES_MAP, getSitePageLink } from '@/config/site-pages';
+import { ShieldCheck, Lock, Cpu } from 'lucide-react';
 
 export interface FooterProps {
   lang?: SupportedLang;
@@ -109,11 +110,10 @@ export const GUIDES_MAP: Record<SupportedLang, FooterLinkItem[]> = {
 
 export function Footer({ lang = 'en', className = '' }: FooterProps) {
   const dict = getDictionary(lang);
-  const prefix = lang === 'en' ? '' : `${lang}/`;
+  const homePath = lang === 'en' ? '/' : `/${lang}/`;
   const currentYear = 2026;
 
   // 1. Calculators by category for the current language
-  // Pull verified existing tools from registry for current language, excluding todo items
   const toolsInLang = PAGES_REGISTRY.filter(
     (p) => p.lang === lang && p.type === 'tool' && !p.isTodo,
   );
@@ -191,117 +191,136 @@ export function Footer({ lang = 'en', className = '' }: FooterProps) {
 
   return (
     <footer
-      className={`border-t border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 ${className}`}
+      className={`border-t border-slate-200/90 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-400 ${className}`}
     >
-      {/* Parent-brand banner at the top */}
-      <div className="border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 py-4 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-          <div className="flex items-center gap-3">
-            <Image
-              src={siteConfig.parentBrand.logo}
-              alt={siteConfig.parentBrand.name}
-              width={24}
-              height={24}
-              className="h-6 w-auto object-contain"
-            />
-            <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium">
-              {dict.footer.parentNetwork}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
+          {/* Brand Info Column (5 cols on desktop) */}
+          <div className="md:col-span-4 lg:col-span-4 space-y-4">
+            <Link
+              href={homePath}
+              className="inline-flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500 rounded-xl"
+            >
+              <div className="relative w-9 h-9 rounded-xl overflow-hidden bg-slate-950 shadow-md flex items-center justify-center p-1 border border-slate-800 shrink-0">
+                <Image
+                  src="/images/logo.png"
+                  alt={siteConfig.name}
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <span className="font-extrabold text-xl tracking-tight text-slate-900 dark:text-white leading-none">
+                Zetawala <span className="text-emerald-600 dark:text-emerald-400">Money</span>
+              </span>
+            </Link>
+
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-sm">
+              Free, accurate money, banking, travel, and salary calculators for Europe, the UK, Australia, and Canada. Zero tracking, no registration, 100% in-browser calculations.
             </p>
-          </div>
-          <a
-            href={siteConfig.parentBrand.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center text-xs sm:text-sm font-semibold text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 transition-colors"
-          >
-            {dict.footer.visitParent}
-          </a>
-        </div>
-      </div>
 
-      {/* 4 Main Footer Columns */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
-          {/* Column 1: Calculators */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white mb-4">
-              {dict.footer.toolsTitle}
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              {toolsList.map((item, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={item.href}
-                    className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Micro Trust Badges */}
+            <div className="flex flex-wrap items-center gap-2 pt-2 text-[11px] font-semibold text-slate-500 dark:text-slate-400">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 border border-emerald-200/60 dark:border-emerald-800/60">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                Statutory Accuracy
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                <Lock className="w-3.5 h-3.5 text-slate-500" />
+                Zero Data Storage
+              </span>
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                <Cpu className="w-3.5 h-3.5 text-slate-500" />
+                Client-Side Engine
+              </span>
+            </div>
           </div>
 
-          {/* Column 2: Guides */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white mb-4">
-              {dict.footer.guidesTitle}
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              {guidesList.map((item, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={item.href}
-                    className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* 3 Navigation Columns (8 cols on desktop) */}
+          <div className="md:col-span-8 lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-6 sm:gap-8">
+            {/* Column 1: Calculators */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3 sm:mb-4">
+                {dict.footer.toolsTitle}
+              </h3>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {toolsList.slice(0, 7).map((item, idx) => (
+                  <li key={idx}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors block py-0.5"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Column 3: Information */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white mb-4">
-              {dict.footer.infoTitle}
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              {infoList.map((item, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={item.href}
-                    className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+            {/* Column 2: Guides & Knowledge */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3 sm:mb-4">
+                {dict.footer.guidesTitle}
+              </h3>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {guidesList.map((item, idx) => (
+                  <li key={idx}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors block py-0.5"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-          {/* Column 4: Zetawala Money */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-slate-900 dark:text-white mb-4">
-              {siteConfig.name}
-            </h3>
-            <ul className="space-y-2.5 text-sm">
-              {siteList.map((item, idx) => (
-                <li key={idx}>
-                  <Link
-                    href={item.href}
-                    className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Column 3: Legal & Trust */}
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3 sm:mb-4">
+                {dict.footer.infoTitle}
+              </h3>
+              <ul className="space-y-2 text-xs sm:text-sm">
+                {infoList.map((item, idx) => (
+                  <li key={`info-${idx}`}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors block py-0.5"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+                {siteList.map((item, idx) => (
+                  <li key={`site-${idx}`}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors block py-0.5"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright */}
-        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
-          <p>© {currentYear} {siteConfig.parentBrand.name}. {dict.footer.copyright}</p>
+        {/* Bottom Bar: Copyright & Single Discrete Zetawala Mention */}
+        <div className="mt-12 pt-8 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 dark:text-slate-400 text-center sm:text-left">
+          <p>
+            © {currentYear} {siteConfig.name}. All rights reserved. A project by{' '}
+            <a
+              href={siteConfig.parentBrand.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-slate-700 dark:text-slate-300 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors underline underline-offset-2"
+            >
+              {siteConfig.parentBrand.name}
+            </a>
+            .
+          </p>
           <p className="text-[11px] text-slate-400 dark:text-slate-500">
             Privacy-first • Zero server storage • 100% in-browser calculations
           </p>

@@ -1,4 +1,4 @@
-export type AdProvider = 'adsense' | 'none' | 'mediavine' | 'raptive';
+export type AdProvider = 'none' | 'adsterra' | 'adsense' | 'mediavine' | 'raptive';
 
 export interface SiteConfig {
   name: string;
@@ -8,6 +8,7 @@ export interface SiteConfig {
   locales: string[];
   adProvider: AdProvider;
   adsenseId: string;
+  adsterraId?: string;
   cfAnalyticsToken: string;
   gscVerification: string;
   parentBrand: {
@@ -29,11 +30,13 @@ export interface SiteConfig {
 export const siteConfig: SiteConfig = {
   name: 'Zetawala Money',
   url: 'https://money.zetawala.com',
-  logo: '/images/money-logo.png',
+  logo: '/images/logo.png',
   defaultLocale: 'en',
   locales: ['en', 'de', 'pl', 'tr', 'ro', 'fr', 'es', 'it', 'nl'],
-  adProvider: (process.env.NEXT_PUBLIC_AD_PROVIDER as AdProvider) || 'adsense',
+  // Ads disabled by default per user specification. Set to 'adsterra' or 'adsense' when traffic scales.
+  adProvider: (process.env.NEXT_PUBLIC_AD_PROVIDER as AdProvider) || 'none',
   adsenseId: process.env.NEXT_PUBLIC_ADSENSE_ID || '',
+  adsterraId: process.env.NEXT_PUBLIC_ADSTERRA_ID || '',
   cfAnalyticsToken: process.env.NEXT_PUBLIC_CF_ANALYTICS_TOKEN || '',
   gscVerification: process.env.NEXT_PUBLIC_GSC_VERIFICATION || '',
   parentBrand: {

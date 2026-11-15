@@ -28,3 +28,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# GSC Indexing URL list (Private, do not commit)
+gsc-urls.txt
+scripts/inspect-logo.mjs
+scripts/check-logo-details.mjs
+scripts/process-logo.mjs
+
